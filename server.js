@@ -2,9 +2,15 @@
 let express = require('express'),
 	 bodyParser = require('body-parser'),
 	 app = express(),
-	 port = process.env.PORT || 3001;
+	 port = process.env.PORT || 3000;
 
 let alexaVerifier = require('alexa-verifier');
+
+var alexaRouter = express.Router();
+app.use('/', alexaRouter);
+
+
+
 var isFirstTime = true;
 const SKILL_NAME = 'Kittycall';
 const GET_CAT_MESSAGE = "Here's your cat: ";
@@ -27,50 +33,28 @@ const Age = [
 	0.6
 ];
 
-const Gender = [
-	
+const Gender = [	
 	'She',
 	'She',
 	'He'
 ];
 
-const Color = [
-	
+const Color = [	
 	'White',
 	'White with Brown Spots',
 	'Black'
 ];
 
-app.use(bodyParser.json({
-	 verify: function getRawBody(req, res, buf) {
-    req.rawBody = buf.toString();
-	 }
-  }));
 
-function requestVerifier(req, res, next) {
-  alexaVerifier(
-    req.headers.signaturecertchainurl,
-    req.headers.signature,
-    req.rawBody,
-    function verificationCallback(err) {
-      if (err) {
-        res.status(401).json({
-          message: 'Verification Failure',
-          error: err
-        });
-      } else {
-        next();
-      }
-    }
-  );
-}
+alexaRouter.use(alexaVerifier);
+alexaRouter.use(bodyParser.json());
 
 function log() {
   if (true) {
     console.log.apply(console, arguments);
   }
 }
-app.get('/', function(req,res){res.send('Hi');});
+app.get('/', function(req,res){res.send('Hi. Welcome to Kitty Call');});
 
 app.post('/Kittycall', requestVerifier, function(req, res) {
 	console.log('Starting post');
