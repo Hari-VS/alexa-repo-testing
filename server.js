@@ -2,7 +2,7 @@
 let express = require('express'),
 	 bodyParser = require('body-parser'),
 	 app = express(),
-	 port = process.env.PORT || 3000;
+	 port = process.env.PORT || 3001;
 
 let alexaVerifier = require('alexa-verifier');
 var isFirstTime = true;
@@ -59,9 +59,10 @@ function log() {
 }
 app.get('/', function(req,res){res.send('Hi');});
 
-app.post('/Kittycall', requestVerifier, function(req, res) {
+app.post('/Kittycall', function(req, res) {
+	console.log('Starting post');
   if (req.body.request.type === 'LaunchRequest') {
-    res.json(getNewHero());
+    res.json(getCat());
     isFirstTime = false;
   } else if (req.body.request.type === 'SessionEndedRequest') { /* ... */
     log("Session End");
@@ -104,7 +105,7 @@ function help() {
 
 function getCat() {
   var welcomeSpeechOutput = 'Welcome to Cat Caller <break time="0.3s" />';
-  if (!isFisrtTime) {
+  if (!isFirstTime) {
     welcomeSpeechOutput = '';
   }
   const catArr = data;
@@ -113,7 +114,7 @@ function getCat() {
   const tempOutput = WHISPER + GET_CAT_MESSAGE + randomCat + PAUSE;
   const speechOutput = welcomeSpeechOutput + tempOutput + MORE_MESSAGE;
   const more = MORE_MESSAGE;
-  return buildResponseWithReprompt(speechOutput, false, randomHero, more);
+  return buildResponseWithReprompt(speechOutput, false, randomCat, more);
 }
 
 function buildResponse(speechText, shouldEndSession, cardText) {
