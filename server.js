@@ -22,11 +22,24 @@ const data = [
 ];
 
 const Age = [
-	2,
-	2,
-	1
+	1.5,
+	1.5,
+	0.6
 ];
 
+const Gender = [
+	
+	'She',
+	'She',
+	'He'
+];
+
+const Color = [
+	
+	'White',
+	'White with Brown Spots',
+	'Black'
+];
 
 app.use(bodyParser.json({
 	 verify: function getRawBody(req, res, buf) {
@@ -59,7 +72,7 @@ function log() {
 }
 app.get('/', function(req,res){res.send('Hi');});
 
-app.post('/Kittycall', function(req, res) {
+app.post('/Kittycall', requestVerifier, function(req, res) {
 	console.log('Starting post');
   if (req.body.request.type === 'LaunchRequest') {
     res.json(getCat());
@@ -82,10 +95,6 @@ app.post('/Kittycall', function(req, res) {
   }
 });
 
-
-function handleDataMissing() {
-  return buildResponse(MISSING_DETAILS, true, null);
-}
 
 function stopAndExit() {
 
@@ -110,7 +119,7 @@ function getCat() {
   }
   const catArr = data;
   const catIndex = Math.floor(Math.random() * catArr.length);
-  const randomCat = catArr[catIndex] + ' is ' + Age[catIndex] + ' years old';
+  const randomCat = catArr[catIndex] + ' is ' + Age[catIndex] + ' years old. ' + Gender[catIndex] + ' is ' + Color[catIndex] + ' in color. ';
   const tempOutput = WHISPER + GET_CAT_MESSAGE + randomCat + PAUSE;
   const speechOutput = welcomeSpeechOutput + tempOutput + MORE_MESSAGE;
   const more = MORE_MESSAGE;
