@@ -57,6 +57,7 @@ function log() {
     console.log.apply(console, arguments);
   }
 }
+app.get('/', function(req,res){res.send('Hi');});
 
 app.post('/Kittycall', requestVerifier, function(req, res) {
   if (req.body.request.type === 'LaunchRequest') {
