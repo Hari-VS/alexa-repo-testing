@@ -110,7 +110,7 @@ function getCat() {
   }
   const catArr = data;
   const catIndex = Math.floor(Math.random() * catArr.length);
-  const randomCat = catArr[catIndex] + 'is' + Age[catIndex] + 'years old';
+  const randomCat = catArr[catIndex] + ' is ' + Age[catIndex] + ' years old';
   const tempOutput = WHISPER + GET_CAT_MESSAGE + randomCat + PAUSE;
   const speechOutput = welcomeSpeechOutput + tempOutput + MORE_MESSAGE;
   const more = MORE_MESSAGE;
